@@ -1,0 +1,209 @@
+README
+vPICdisasm - Version 1.2 - 07/28/2010
+Vanya A. Sergeev - <vsergeev@gmail.com>
+================================================================================
+Table of Contents
+
+1. ABOUT vPICdisasm
+2. LICENSE
+3. COMPILING vPICdisasm
+4. USING vPICdisasm
+5. Ghetto Address Labels
+6. Shortcomings
+7. Source Code
+8. Sample Disassembly Outputs  
+================================================================================
+
+1. ABOUT vPICdisasm
+================================================================================
+vPICdisasm is a Microchip PIC firmware disassembler that supports the Baseline,
+Mid-Range, and Mid-Range Enhanced 8-bit PIC cores. This single-pass disassembler
+can read Intel HEX8 and Motorola S-Record formatted files containing valid PIC
+program binaries.
+
+vPICdisasm fully supports all 35 Mid-Range PIC instructions (as well as the two
+deprecated ones ("option" and "tris")), the additional 21 Mid-Range Enhanced 
+PIC instructions, and the 33 Baseline PIC instructions.
+
+vPICdisasm features a handful of formatting options, including:
+ - Printing the instruction addresses alongside disassembly, enabled by default
+ - Ghetto Address Labels (see "Ghetto Address Labels" section)
+ - Literal operands represented in either hexadecimal, binary, or decimal bases,
+   and as ASCII in an assembly comment 
+ - data word directive for data not recognized as an instruction during
+   disassembly
+
+vPICdisasm should work on most *nix platforms, including a Cygwin environment.
+vPICdisasm was written by Vanya A. Sergeev, and tested with the GNU C Compiler 
+on Linux. Feel free to send any ideas or suggestions to vsergeev at gmail dot 
+com.
+
+2. LICENSE
+================================================================================
+vPICdisasm is released under the GNU General Public License Version 2.
+    You should have received a copy of the GNU General Public License
+    along with this program; see the file "COPYING".  If not, visit
+    http://www.gnu.org or write to the Free Software Foundation, Inc.,
+    59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+3. COMPILING vPICdisasm
+================================================================================
+Simply by running,
+$ make
+ in the vPICdisasm project directory should compile vPICdisasm on most
+*nix systems, including a Cygwin environment. The Makefile is configured to use
+GCC to compile vPICdisasm.
+vPICdisasm should have no problem being compiled with "gmake".
+
+4. USING vPICdisasm
+================================================================================
+vPICdisasm prints its disassembly output to stdout.
+
+* File Input:
+	For most purposes, just type
+	 $ ./vpicdisasm <PIC program file>
+	Example:
+	 $ ./vpicdisasm sampleprogram.hex
+
+	vPICdisasm will auto-recognize Intel HEX8 and Motorola S-Record files by
+	their file extensions, but if it fails to do so, use the the -t or
+	 --file-type option to specify the file format.
+	Example:
+	 $ ./vpicdisasm -t ihex sampleprogram
+
+	The file type argument to the option can be "ihex", or "srecord" for 
+	Intel HEX8 or Motorola S-Record formatted files, respectively.
+
+	vPICdisasm will assume the Mid-Range PIC architecture by default, you
+	can specifiy an alternate architecture with the --architecture option.
+
+	Example
+	$ ./vpicdisasm -m enhanced sampleprogram.hex
+
+* Option -a or --architecture
+	vPICdisasm supports the Baseline, Mid-Range, and Mid-Range Enhanced
+	8-bit PIC cores. The architecture can be specified with this option,
+	followed by the architecture identifier (right side of the list below):
+		Baseline		baseline
+		Mid-Range		midrange (default)
+		Mid-Range Enhanced	enhanced
+
+* Options --no-...
+	By default, vPICdisasm will print the instruction addresses alongside 
+	disassembly and destination comments for relative branch, jump, and call
+	instructions. These formatting options can be disabled with the 
+	--no-addresses and --no-destination-comments options, respectively.
+
+* Options --literal-...
+	vPICdisasm can represent literal operands in either hexadecimal, 
+	decimal, or binary bases. The base can be specified with the
+	--literal-hex, --literal-bin, and --literal-dec options.
+
+* Options --literal-ascii
+	With this option, vPICdisasm will dipslay the ASCII value of a literal
+	operand as an assembly comment.
+
+* Options -l or --address-label	
+	For usage information on the -l or --address-label option see the 
+	"Ghetto Address Labels" section.
+
+* Options -h or --help, -v or --version
+	The -h or --help option will print a brief usage summary, including 
+	supported program options and file types.
+	The -v or --version option will print the program's version number.
+
+If you encounter any program bugs or problems, please notify the program
+author by email: Vanya A. Sergeev - <vsergeev@gmail.com>.
+
+5. Ghetto Address Labels
+================================================================================
+vPICdisasm supports a unique formatting feature: Ghetto Address Labels, which 
+few, if not any, single-pass disassemblers implement.
+
+With the -l or --address-label option and a supplied prefix, vPICdisasm
+will print a label containing the (ideally) non-numerical supplied prefix 
+and the address of the disassembled instruction at every instruction. Also, 
+all relative branch, jump, and call instructions will be formatted to jump to 
+their designated address label.
+
+This feature enables direct re-assembly of the vPICdisasm's disassembly.
+This can be especially useful for quick modification of the PIC program assembly
+code without having to manually format the disassembly or adjust the relative
+branch, jump, or call distances with every modification to the disassembly.
+
+The -l or --address-label option overrides the default printing of the
+addresses alongside disassembly. Destination comments can still be used.
+
+Example:
+$ ./vpicdisasm -l "A_" sampleprogram.hex
+vPICdisasm's disassembly will include address labels that will look like this
+A_0000:. For sample disassembly outputs by vPICdisasm, see the
+"Sample Disassembly Outputs" section.
+
+6. Shortcomings
+================================================================================
+vPICdisasm does not display the original opcode of the disassembled instruction.
+The original opcode can be convenient for some disassembled instructions that
+were actually meant to be data words (data directive).
+These feature do not affect the accuracy of the disassembler's output, and 
+may be supported in future versions of vPICdisasm.
+vPICdisasm does not yet support the PIC18 architecture.
+
+7. Source Code
+================================================================================
+vPICdisasm's source code is heavily commented, because this disassembler was
+also a personal learning project of the author.
+Operand prefixes (such as "0x" for address operand) can be customized in the 
+format.h header file. 
+Field width spacing of the addresses printed alongside disassembly can be 
+customized in the ui.c source file.
+The output file (default is stdout) can be changed in ui.c source file.
+vPICdisasm uses libGIS, a free Atmel Generic, Intel HEX8, and Motorola S-Record 
+Parser Library to parse formatted files containing PIC program binaries. libGIS
+is available for free under a Public Domain license at:
+http://dev.frozeneskimo.com/software_projects/libgis
+libGIS is compiled into vPICdisasm--it does not need to be obtained separately.
+
+8. Sample Disassembly Outputs
+================================================================================
+Here are a few sample disassembly outputs illustrating the various formatting
+options and disassembly settings vPICdisasm supports:
+
+$ ./vpicdisasm sampleprogram.hex 
+   0:   movlw 0x0
+   1:   tris 0x06
+   2:   movlw 0xFF
+   3:   movwf 0x06
+   4:   goto 0x004
+
+$ ./vpicdisasm --no-addresses sampleprogram.hex
+movlw 0x0
+tris 0x06
+movlw 0xFF
+movwf 0x06
+goto 0x004
+
+$ ./vpicdisasm --literal-bin sampleprogram.hex
+   0:   movlw b'00000000'
+   1:   tris 0x06
+   2:   movlw b'11111111'
+   3:   movwf 0x06
+   4:   goto 0x004
+
+$ ./vpicdisasm -l "A_" sampleprogram.hex
+
+org 0x000
+A_000 movlw 0x0
+A_001 tris 0x06
+A_002 movlw 0xFF
+A_003 movwf 0x06
+A_004 goto A_004
+end
+
+$ ./vpicdisasm --literal-ascii sampleprogram2.hex
+   0:   retlw 0x48      ; 'H'
+   1:   retlw 0x45      ; 'E'
+   2:   retlw 0x4C      ; 'L'
+   3:   retlw 0x4C      ; 'L'
+   4:   retlw 0x4F      ; 'O'
+

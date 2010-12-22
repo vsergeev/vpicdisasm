@@ -1,0 +1,3 @@
+* test signed addfsr, signed rel moviw/movwi at some point when mpasm supports it
+* pic18 / operand arguments processor for multiple byte length instructions
+* release 1.3

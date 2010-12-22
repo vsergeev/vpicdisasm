@@ -1,0 +1,9 @@
+MOVFF f,f 1100ffffffffffff,1111ffffffffffff
+CALL l,s 1110110sllllllll,1111llllllllllll
+GOTO l 11101111llllllll,1111llllllllllll
+LFSR f,k 1110111000ffkkkk,11110000kkkkkkkk
+
+extended:
+MOVSF z,f 111010110zzzzzzz,1111ffffffffffff
+MOVSS z,z 111010111zzzzzzz,1111xxxxxzzzzzzz
+

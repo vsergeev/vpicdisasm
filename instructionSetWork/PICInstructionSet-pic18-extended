@@ -1,0 +1,9 @@
+ADDFSR j,k 11101000jjkkkkkk
+ADDULNK k 1110100011kkkkkk
+CALLW - 0000000000010100
+PUSHL k 11101010kkkkkkkk
+SUBFSR j,k 11101001jjkkkkkk
+SUBULNK k 1110100111kkkkkk
+MOVSF z,f 111010110zzzzzzz,1111ffffffffffff
+MOVSS z,z 111010111zzzzzzz,1111xxxxxzzzzzzz
+

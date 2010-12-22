@@ -1,0 +1,16 @@
+Standard:
+f = register
+d = boolean
+a = boolean
+s = boolean
+b = bit (0=7)
+k = literal
+n = relative address (PC+2+2n, n is 2's complemented)
+l = absolute address
+
+Extended:
+j = FSR index
+k = literal
+f = register
+z = address offset literal
+

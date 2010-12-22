@@ -1,0 +1,35 @@
+ADDWF f  d Add W and f 1 000111dfffffff C DC Z 1 2 
+ANDWF f  d AND W with f 1 000101dfffffff Z 1 2 
+CLRF f Clear f 1 0000011fffffff Z 2 
+CLRW -Clear W 1 0000010xxxxxxx Z 
+COMF f  d Complement f 1 001001dfffffff Z 1 2 
+DECF f  d Decrement f 1 000011dfffffff Z 1 2 
+DECFSZ f  d Decrement f  Skip if 0 1(2) 001011dfffffff 1 2 3 
+INCF f  d Increment f 1 001010dfffffff Z 1 2 
+INCFSZ f  d Increment f  Skip if 0 1(2) 001111dfffffff 1 2 3 
+IORWF f  d Inclusive OR W with f 1 000100dfffffff Z 1 2 
+MOVF f  d Move f 1 001000dfffffff Z 1 2 
+MOVWF f Move W to f 1 0000001fffffff 
+NOP -No Operation 1 0000000xx00000 
+RLF f  d Rotate Left f through Carry 1 001101dfffffff C 1 2 
+RRF f  d Rotate Right f through Carry 1 001100dfffffff C 1 2 
+SUBWF f  d Subtract W from f 1 000010dfffffff C DC Z 1 2 
+SWAPF f  d Swap nibbles in f 1 001110dfffffff 1 2 
+XORWF f  d Exclusive OR W with f 1 000110dfffffff Z 1 2 
+BCF f  b Bit Clear f 1 0100bbbfffffff 1 2 
+BSF f  b Bit Set f 1 0101bbbfffffff 1 2 
+BTFSC f  b Bit Test f  Skip if Clear 1 (2) 0110bbbfffffff 3 
+BTFSS f  b Bit Test f  Skip if Set 1 (2) 0111bbbfffffff 3 
+ADDLW k Add literal and W 1 11111xkkkkkkkk C DC Z 
+ANDLW k AND literal with W 1 111001kkkkkkkk Z 
+CALL k Call subroutine 2 100kkkkkkkkkkk 
+CLRWDT -Clear Watchdog Timer 1 00000001100100 TO PD 
+GOTO k Go to address 2 101kkkkkkkkkkk 
+IORLW k Inclusive OR literal with W 1 111000kkkkkkkk Z 
+MOVLW k Move literal to W 1 1100xxkkkkkkkk 
+RETFIE -Return from interrupt 2 00000000001001 
+RETLW k Return with literal in W 2 1101xxkkkkkkkk 
+RETURN -Return from Subroutine 2 00000000001000 
+SLEEP -Go into standby mode 1 00000001100011 TO PD 
+SUBLW k Subtract W from literal 1 11110xkkkkkkkk C DC Z 
+XORLW k Exclusive OR literal with W 1 111010kkkkkkkk Z 
