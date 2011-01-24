@@ -66,13 +66,12 @@ Example:
 
 vPICdisasm will assume the Mid-Range PIC architecture by default, you
 can specifiy an alternate architecture with the -a or --architecture option.
-
 Example:
 $ ./vpicdisasm -a enhanced sampleprogram.hex
 
 vPICdisasm will auto-recognize Intel HEX8 and Motorola S-Record files by
-their file extensions, but if it fails to do so, use the the -t or --file-type option to
-specify the file format.
+their file extensions, but if it fails to do so, use the the -t or --file-type
+option to specify the file format.
 Example:
  $ ./vpicdisasm -t ihex sampleprogram
 
