@@ -127,7 +127,7 @@ static int lookupInstruction(uint16_t opcode, int offset, int instructionSetInde
 /* Disassembles/decodes operands back to their original form. */
 static int disassembleOperands(disassembledInstruction *dInstruction) {
 	int i;
-	int msb;
+	uint16_t msb;
 
 	/* This should never happen */
 	if (dInstruction == NULL)
@@ -143,13 +143,13 @@ static int disassembleOperands(disassembledInstruction *dInstruction) {
 				/* We got lucky, because it turns out that in all of the masks
 				 * for relative jumps / signed literals, the bits occupy the
 				 * lowest positions continuously (no breaks in the bit string). */
+
 				/* Calculate the most significant bit of this signed data */
-				msb = dInstruction->instruction->operandMasks[i];
-				msb &= ~(dInstruction->instruction->operandMasks[i]>>1);
+				msb = (dInstruction->instruction->operandMasks[i] + 1) >> 1;
 				/* Check if the most significant bit is set (the number is negative) */
 				if ((dInstruction->operands[i] & msb) != 0) {
 					/* If so, recover the data and set the operand negative. */
-					dInstruction->operands[i] = (~dInstruction->operands[i]+1)&(msb-1);
+					dInstruction->operands[i] = (~dInstruction->operands[i]+1)&(dInstruction->instruction->operandMasks[i]);
 					dInstruction->operands[i] = -dInstruction->operands[i];
 				}
 			default:
