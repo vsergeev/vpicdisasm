@@ -140,12 +140,19 @@ A_0000. For sample disassembly outputs by vPICdisasm, see the
 
 6. Shortcomings
 ================================================================================
+vPICdisasm does not yet support the PIC18 architecture.
+
+vPICdisasm does not disassemble and display alternate versions of the same
+encoded instruction. This technically means that some instructions can never be
+displayed in the disassembly because another instruction may precede it in
+priority.
+
 vPICdisasm does not display the original opcode of the disassembled instruction.
 The original opcode can be convenient for some disassembled instructions that
 were actually meant to be data words (data directive).
-These feature do not affect the accuracy of the disassembler's output, and 
+
+These features do not affect the accuracy of the disassembler's output, and 
 may be supported in future versions of vPICdisasm.
-vPICdisasm does not yet support the PIC18 architecture.
 
 7. Source Code
 ================================================================================
