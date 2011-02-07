@@ -59,13 +59,13 @@ vPICdisasm should have no problem being compiled with "gmake".
 ================================================================================
 vPICdisasm prints its disassembly output to stdout.
 
-For most purposes, just type
+For most purposes, just use:
  $ ./vpicdisasm <PIC program file>
 Example:
  $ ./vpicdisasm sampleprogram.hex
 
-vPICdisasm will assume the Mid-Range PIC architecture by default, you
-can specifiy an alternate architecture with the -a or --architecture option.
+vPICdisasm will assume the Mid-Range PIC architecture by default. You can
+specifiy an alternate architecture with the -a or --architecture option.
 Example:
 $ ./vpicdisasm -a enhanced sampleprogram.hex
 
@@ -119,7 +119,7 @@ vPICdisasm supports a unique formatting feature: Ghetto Address Labels, which
 few, if not any, single-pass disassemblers implement.
 
 With the -l or --address-label option and a supplied prefix, vPICdisasm
-will print a label containing the (ideally) non-numerical supplied prefix 
+will print a label containing the ideally non-numerical supplied prefix 
 and the address of the disassembled instruction at every instruction. Also, 
 all relative branch, jump, and call instructions will be formatted to jump to 
 their designated address label.
@@ -134,8 +134,8 @@ addresses alongside disassembly. Destination comments can still be used.
 
 Example:
 $ ./vpicdisasm -l "A_" sampleprogram.hex
-vPICdisasm's disassembly will include address labels that will look like this
-A_0000:. For sample disassembly outputs by vPICdisasm, see the
+vPICdisasm's disassembly will include address labels that will look like this:
+A_0000. For sample disassembly outputs by vPICdisasm, see the
 "Sample Disassembly Outputs" section.
 
 6. Shortcomings
