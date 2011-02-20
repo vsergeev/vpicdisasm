@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -O3 -D_GNU_SOURCE
 LDFLAGS=
-OBJECTS = libGIS-1.0.4/ihex.o libGIS-1.0.4/srecord.o pic_instructionset.o pic_disasm.o format.o file.o ui.o
+OBJECTS = libGIS-1.0.5/ihex.o libGIS-1.0.5/srecord.o pic_instructionset.o pic_disasm.o format.o file.o ui.o
 PROGNAME = vpicdisasm
 PREFIX = /usr/local
 BINDIR = $(PREFIX)/bin
