@@ -3,18 +3,19 @@ CFLAGS = -Wall -O3 -D_GNU_SOURCE
 LDFLAGS=
 OBJECTS = libGIS-1.0.4/ihex.o libGIS-1.0.4/srecord.o pic_instructionset.o pic_disasm.o format.o file.o ui.o
 PROGNAME = vpicdisasm
-BINDIR = /usr/local/bin
+BINDIR = /usr/bin
 
 all: $(PROGNAME)
 
 install: $(PROGNAME)
-	install -m 0755 $(PROGNAME) $(BINDIR)
+	install -m 0755 $(PROGNAME) $(DESTDIR)$(BINDIR)
 
 $(PROGNAME): $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) 
 
 clean:
-	rm -rf $(PROGNAME) libGIS-1.0.4/*.o *.o
+	rm -rf $(PROGNAME) $(OBJECTS)
 
 uninstall:
-	rm -f $(BINDIR)/$(PROGNAME)
+	rm -f $(DESTDIR)$(BINDIR)/$(PROGNAME)
+
