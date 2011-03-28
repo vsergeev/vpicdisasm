@@ -78,10 +78,8 @@ static void printUsage(FILE *stream, const char *programName) {
   Mid-Range			midrange (default)\n\
   Enhanced Mid-Range		enhanced\n\n");
 	fprintf(stream, "Supported file types:\n\
-  Intel HEX 			ihex\n\
-  Auto-recognized with .hex, .ihex, and .ihx file extensions.\n\n\
-  Motorola S-Record 		srecord\n\
-  Auto-recognized with .srec and .sre file extensions.\n\n");
+  Intel HEX8 			ihex\n\
+  Motorola S-Record 		srecord\n\n");
 }
 
 static void printVersion(FILE *stream) {
@@ -92,7 +90,7 @@ static void printVersion(FILE *stream) {
 int main (int argc, const char *argv[]) {
 	int optc;
 	FILE *fileIn, *fileOut;
-	char arch[9], fileType[8], *fileExtension;
+	char arch[9], fileType[8];
 	int archSelect;
 	int (*disassembleFile)(FILE *, FILE *, formattingOptions, int);
 	formattingOptions fOptions;
@@ -101,7 +99,7 @@ int main (int argc, const char *argv[]) {
 	fOptions.options = 0;
 	/* Set default address field width for this version. */
 	fOptions.addressFieldWidth = 3;
-	/* Default to stdout output file */
+	/* Default output file to stdout */
 	fileOut = stdout;
 
 	arch[0] = '\0';
@@ -160,37 +158,44 @@ int main (int argc, const char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
+	/* If there are no more arguments left */
 	if (optind == argc) {
 		fprintf(stderr, "Error: No program file specified! Use - for standard input.\n\n");
 		printUsage(stderr, argv[0]);
+		fclose(fileOut);
 		exit(EXIT_FAILURE);
 	}
 
-	/* If no file type was specified, try to auto-recognize the file type by extension. */
-	if (fileType[0] == '\0' && strlen(argv[optind]) > 1) {
-		fileExtension = rindex(argv[optind], '.');
-		if (fileExtension == NULL) {
-			fprintf(stderr, "Unable to auto-recognize file type by extension.\n");
-			fprintf(stderr, "Please specify file type with -t,--file-type option.\n");
+	/* Support reading from stdin with filename "-" */
+	if (strcmp(argv[optind], "-") == 0) {
+		fileIn = stdin;
+	} else {
+		fileIn = fopen(argv[optind], "r");
+		if (fileIn == NULL) {
+			perror("Error: Cannot open program file for disassembly");
+			fclose(fileOut);
 			exit(EXIT_FAILURE);
 		}
-		/* To skip the dot */
-		fileExtension++;
-		if (strcasecmp(fileExtension, "ihx") == 0)
+	}
+
+	/* If no file type was specified, try to auto-recognize the first character of the file */
+	if (fileType[0] == '\0') {
+		int c;
+		c = fgetc(fileIn);
+		/* Intel HEX record statements start with : */
+		if ((char)c == ':')
 			strcpy(fileType, "ihex");
-		else if (strcasecmp(fileExtension, "hex") == 0)
-			strcpy(fileType, "ihex");
-		else if (strcasecmp(fileExtension, "ihex") == 0)
-			strcpy(fileType, "ihex");
-		else if (strcasecmp(fileExtension, "srec") == 0)
-			strcpy(fileType, "srecord");
-		else if (strcasecmp(fileExtension, "sre") == 0)
+		/* Motorola S-Record record statements start with S */
+		else if ((char)c == 'S')
 			strcpy(fileType, "srecord");
 		else {
-			fprintf(stderr, "Unable to auto-recognize file type by extension.\n");
+			fprintf(stderr, "Unable to auto-recognize file type by first character.\n");
 			fprintf(stderr, "Please specify file type with -t,--file-type option.\n");
+			fclose(fileOut);	
+			fclose(fileIn);
 			exit(EXIT_FAILURE);
 		}
+		ungetc(c, fileIn);
 	}
 
 	/* If no architecture was specified, use midrange by default */
@@ -206,13 +211,12 @@ int main (int argc, const char *argv[]) {
 		else {
 			fprintf(stderr, "Unknown 8-bit PIC architecture %s.\n", arch);
 			fprintf(stderr, "See program help/usage for supported PIC architectures.\n");
+			fclose(fileOut);	
+			fclose(fileIn);
 			exit(EXIT_FAILURE);
 		}
 	}
 	
-	/* I check the fileType string here and set the disassembleFile
-	 * pointer so I don't have to do any file type error checking after
-	 * I've opened the file, this means cleaner error handling. */
 	if (strcasecmp(fileType, "ihex") == 0)
 		disassembleFile = disassembleIHexFile;
 	else if (strcasecmp(fileType, "srecord") == 0)
@@ -223,18 +227,9 @@ int main (int argc, const char *argv[]) {
 		else
 			fprintf(stderr, "Unspecified file type.\n");
 		fprintf(stderr, "See program help/usage for supported file types.\n");
+		fclose(fileOut);	
+		fclose(fileIn);
 		exit(EXIT_FAILURE);
-	}
-	
-	/* Support reading from stdin with filename "-" */
-	if (strcmp(argv[optind], "-") == 0) {
-		fileIn = stdin;
-	} else {
-		fileIn = fopen(argv[optind], "r");
-		if (fileIn == NULL) {
-			perror("Error: Cannot open program file for disassembly");
-			exit(EXIT_FAILURE);
-		}
 	}
 
 	disassembleFile(fileOut, fileIn, fOptions, archSelect);
@@ -244,3 +239,4 @@ int main (int argc, const char *argv[]) {
 
 	exit(EXIT_SUCCESS);
 }
+
