@@ -42,7 +42,7 @@ static int lookupInstruction(uint16_t opcode, int offset, int instructionSetInde
 
 
 /* Disassembles an assembled instruction, including its operands. */
-int disassembleInstruction(disassembledInstruction *dInstruction, const assembledInstruction aInstruction, int instructionSetIndex) {
+int disassembleInstruction(disassembledInstruction *dInstruction, const assembledInstruction *aInstruction, int instructionSetIndex) {
 	int instructionIndex, i;
 	
 	if (dInstruction == NULL)
@@ -54,18 +54,18 @@ int disassembleInstruction(disassembledInstruction *dInstruction, const assemble
 		return ERROR_INVALID_ARGUMENTS;
 	
 	/* Look up the instruction */
-	instructionIndex = lookupInstruction(aInstruction.opcode, 0, instructionSetIndex);
+	instructionIndex = lookupInstruction(aInstruction->opcode, 0, instructionSetIndex);
 
 	/* Copy over the address, and reference to the instruction, set
 	 * the equivilant-encoded but different instruction to NULL for now. */
-	dInstruction->address = aInstruction.address;
+	dInstruction->address = aInstruction->address;
 	dInstruction->instruction = &(allInstructionSets[instructionSetIndex].instructionSet[instructionIndex]);
 	dInstruction->alternateInstruction = NULL;
 	
 	/* Copy out each operand, extracting the operand data from the original
 	 * opcode using the operand mask. */
 	for (i = 0; i < allInstructionSets[instructionSetIndex].instructionSet[instructionIndex].numOperands; i++) 
-		dInstruction->operands[i] = extractDataFromMask(aInstruction.opcode, dInstruction->instruction->operandMasks[i]);
+		dInstruction->operands[i] = extractDataFromMask(aInstruction->opcode, dInstruction->instruction->operandMasks[i]);
 	
 	/* Disassemble operands */
 	if (disassembleOperands(dInstruction) < 0)
