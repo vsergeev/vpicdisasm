@@ -57,7 +57,7 @@ int printDisassembledInstruction(FILE *out, const assembledInstruction *aInstruc
 
 	/* If original opcode printing is enabled and address labels are disabled, print the original opcode */
 	if (fOptions.options & FORMAT_OPTION_ORIGINAL_OPCODE && !(fOptions.options & FORMAT_OPTION_ADDRESS_LABEL))
-		retVal = fprintf(out, "%04X\t", aInstruction->opcode);
+		retVal = fprintf(out, "%02X %02X\t\t", (aInstruction->opcode >> 8) & 0xFF, aInstruction->opcode & 0xFF);
 
 	if (retVal < 0)
 		return ERROR_FILE_WRITING_ERROR;
