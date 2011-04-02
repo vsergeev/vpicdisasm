@@ -37,20 +37,33 @@ static int formatDisassembledOperand(char **strOperand, int operandNum, const di
 
 
 /* Prints a disassembled instruction, formatted with options set in the formattingOptions structure. */
-int printDisassembledInstruction(FILE *out, const disassembledInstruction *dInstruction, formattingOptions fOptions) {
+int printDisassembledInstruction(FILE *out, const assembledInstruction *aInstruction, const disassembledInstruction *dInstruction, formattingOptions fOptions) {
 	int retVal, i;
 	char *strOperand;
+
+	retVal = 0;
 	
 	/* If address labels are enabled, then we use an address label prefix as set in the
 	 * string addressLabelPrefix, because labels need to start with non-numerical character
 	 * for best compatibility with PIC assemblers. */	
 	if (fOptions.options & FORMAT_OPTION_ADDRESS_LABEL) 
-		retVal = fprintf(out, "%s%0*X\t%s ", fOptions.addressLabelPrefix, fOptions.addressFieldWidth, dInstruction->address, dInstruction->instruction->mnemonic);
-	/* Otherwise print the address that the instruction is located at, without address labels. */
+		retVal = fprintf(out, "%s%0*X\t", fOptions.addressLabelPrefix, fOptions.addressFieldWidth, dInstruction->address);
+	/* Otherwise just print the address, without address labels. */
 	else if (fOptions.options & FORMAT_OPTION_ADDRESS) 
-		retVal = fprintf(out, "%4X:\t%s ", dInstruction->address, dInstruction->instruction->mnemonic);
-	else 
-		retVal = fprintf(out, "\t%s ", dInstruction->instruction->mnemonic);
+		retVal = fprintf(out, "%4X:\t", dInstruction->address);
+
+	if (retVal < 0)
+		return ERROR_FILE_WRITING_ERROR;
+
+	/* If original opcode printing is enabled and address labels are disabled, print the original opcode */
+	if (fOptions.options & FORMAT_OPTION_ORIGINAL_OPCODE && !(fOptions.options & FORMAT_OPTION_ADDRESS_LABEL))
+		retVal = fprintf(out, "%04X\t", aInstruction->opcode);
+
+	if (retVal < 0)
+		return ERROR_FILE_WRITING_ERROR;
+
+	/* Print the instruction mnemonic */
+	retVal = fprintf(out, "%s ", dInstruction->instruction->mnemonic);
 
 	if (retVal < 0)
 		return ERROR_FILE_WRITING_ERROR;

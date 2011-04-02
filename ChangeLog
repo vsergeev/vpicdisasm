@@ -7,7 +7,8 @@ Release 1.3 - 04/03/2011
  - Improved Intel HEX8 / Motorola S-Record auto-detection by first character
    rather than file extension.
  - Thanks to Thomas for all four of the above fixes and suggestions!
- - Added printing of original opcode data alongside disassembly.
+ - Added printing of original opcode data alongside disassembly with
+   --original option.
 
 Release 1.2 - 07/28/2010
  - Added support for Baseline and Mid-Range Enhanced PIC cores.

@@ -99,6 +99,11 @@ vPICdisasm should have no problem being compiled with "gmake".
 		Mid-Range		midrange (default)
 		Mid-Range Enhanced	enhanced
 
+* Option --original
+	Print the original opcode data to the left of the disassembly.
+	Note: does nothing if address labels are enabled (to ensure
+	assemble-able code).
+
 * Options --no-addresses, --no-destination-comments
 	By default, vPICdisasm will print the instruction addresses alongside 
 	disassembly and destination comments for relative branch, jump, and call

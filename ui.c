@@ -34,6 +34,7 @@ static int no_addresses = 0;				/* Flag for --no-addresses */
 static int literal_base = 0;				/* Value of the literal base (hex, bin, dec) */
 static int literal_ascii_comment = 0;			/* Flag for --literal-ascii */
 static int no_destination_comments = 0;			/* Flag for --no-destination-comments */
+static int original_opcode = 0;				/* Flag for --original */
 
 static struct option long_options[] = {
 	{"address-label", required_argument, NULL, 'l'},
@@ -45,6 +46,7 @@ static struct option long_options[] = {
 	{"literal-dec", no_argument, &literal_base, FORMAT_OPTION_LITERAL_DEC},
 	{"literal-hex", no_argument, &literal_base, FORMAT_OPTION_LITERAL_HEX},
 	{"literal-ascii", no_argument, &literal_ascii_comment, 1},
+	{"original", no_argument, &original_opcode, 1},
 	{"no-destination-comments", no_argument, &no_destination_comments, 1},
 	{"help", no_argument, NULL, 'h'},
 	{"version", no_argument, NULL, 'v'},
@@ -62,6 +64,8 @@ static void printUsage(FILE *stream, const char *programName) {
   -t, --file-type <type>	Specify the file type of the object file.\n\
   -l, --address-label <prefix> 	Create ghetto address labels with \n\
 				the specified label prefix.\n\
+  --original                    Print original opcode data alongside\n\
+				disassembly.\n\
   --no-addresses		Do not display the address alongside\n\
 				disassembly.\n\
   --no-destination-comments	Do not display the destination address\n\
@@ -152,6 +156,9 @@ int main (int argc, const char *argv[]) {
 
 	if (literal_ascii_comment)
 		fOptions.options |= FORMAT_OPTION_LITERAL_ASCII_COMMENT;
+
+	if (original_opcode)
+		fOptions.options |= FORMAT_OPTION_ORIGINAL_OPCODE;
 	
 	if (fileOut == NULL) {
 		perror("Error: Cannot open output file for writing");
