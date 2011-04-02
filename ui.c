@@ -83,7 +83,7 @@ static void printUsage(FILE *stream, const char *programName) {
 }
 
 static void printVersion(FILE *stream) {
-	fprintf(stream, "vPICdisasm version 1.2 - 07/28/2010.\n");
+	fprintf(stream, "vPICdisasm version 1.3 - 04/03/2011.\n");
 	fprintf(stream, "Written by Vanya Sergeev - <vsergeev@gmail.com>\n");
 }
 	

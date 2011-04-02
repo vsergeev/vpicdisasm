@@ -1,5 +1,5 @@
 README
-vPICdisasm - Version 1.2 - 07/28/2010
+vPICdisasm - Version 1.3 - 04/03/2011
 Vanya A. Sergeev - <vsergeev@gmail.com>
 ================================================================================
 Table of Contents
@@ -27,11 +27,15 @@ PIC instructions, and the 33 Baseline PIC instructions.
 
 vPICdisasm features a handful of formatting options, including:
  - Printing the instruction addresses alongside disassembly, enabled by default
+ - Printing the destination address of relative branch/jump/call instructions
+   as comments alongside disassembly, enabled by default
+ - Printing the original opcode data alongside disassembly
  - Ghetto Address Labels (see "Ghetto Address Labels" section)
  - Literal operands represented in either hexadecimal, binary, or decimal bases,
    and as ASCII in an assembly comment 
  - data word directive for data not recognized as an instruction during
    disassembly
+ - Piped input and output
 
 vPICdisasm should work on most *nix platforms, including a Cygwin or MinGW
 environment. vPICdisasm was written by Vanya A. Sergeev, and tested with the
@@ -53,30 +57,39 @@ $ make
  in the vPICdisasm project directory should compile vPICdisasm on most
 *nix systems, including a Cygwin or MinGW environment. The Makefile is
 configured to use GCC to compile vPICdisasm.
+
 vPICdisasm should have no problem being compiled with "gmake".
 
 4. USING vPICdisasm
 ================================================================================
-vPICdisasm prints its disassembly output to stdout.
 
-For most purposes, just use:
- $ ./vpicdisasm <PIC program file>
-Example:
- $ ./vpicdisasm sampleprogram.hex
+* File Input:
+	For most purposes:
+	 $ ./vpicdisasm <PIC program file>
+	Example:
+	 $ ./vpicdisasm sampleprogram.hex
 
-vPICdisasm will assume the Mid-Range PIC architecture by default. You can
-specifiy an alternate architecture with the -a or --architecture option.
-Example:
-$ ./vpicdisasm -a enhanced sampleprogram.hex
+	Use - for standard input.
 
-vPICdisasm will auto-recognize Intel HEX8 and Motorola S-Record files by
-their file extensions, but if it fails to do so, use the the -t or --file-type
-option to specify the file format.
-Example:
- $ ./vpicdisasm -t ihex sampleprogram
+	vPICdisasm will assume the Mid-Range PIC architecture by default. You can
+	specifiy an alternate architecture with the -a or --architecture option.
+	Example:
+	$ ./vpicdisasm -a enhanced sampleprogram.hex
 
-The file type argument to the option can be "ihex", or "srecord" for 
-Intel HEX8 or Motorola S-Record formatted files, respectively.
+* Option -t or --file-type
+	vPICdisasm will auto-recognize Intel HEX8, and Motorola S-Record files
+	by their first character. However, the -t or --file-type option can be
+	used to explicitly select the file format.
+	Example:
+	 $ ./vpicdisasm -t ihex sampleprogram
+
+	The file type argument for this option can be "ihex", or "srecord" for 
+	Intel HEX8 or Motorola S-Record formatted files, respectively.
+
+* Option -o or --out-file <output file>
+	This option can be used to specify an output file for writing instead
+	of the standard output. The output file - is also synonymous for
+	standard output.
 
 * Option -a or --architecture
 	vPICdisasm supports the Baseline, Mid-Range, and Mid-Range Enhanced
@@ -86,24 +99,22 @@ Intel HEX8 or Motorola S-Record formatted files, respectively.
 		Mid-Range		midrange (default)
 		Mid-Range Enhanced	enhanced
 
-* Options --no-...
+* Options --no-addresses, --no-destination-comments
 	By default, vPICdisasm will print the instruction addresses alongside 
 	disassembly and destination comments for relative branch, jump, and call
 	instructions. These formatting options can be disabled with the 
 	--no-addresses and --no-destination-comments options, respectively.
 
-* Options --literal-...
+* Options --literal-hex, --literal-bin, --literal-dec
 	vPICdisasm can represent literal operands in either hexadecimal, 
 	decimal, or binary bases. The base can be specified with the
 	--literal-hex, --literal-bin, and --literal-dec options.
 
 * Options --literal-ascii
-	With this option, vPICdisasm will dipslay the ASCII value of a literal
-	operand as an assembly comment.
+	Display the ASCII value of a literal operand in an assembly comment.
 
 * Options -l or --address-label	
-	For usage information on the -l or --address-label option see the 
-	"Ghetto Address Labels" section.
+	See the "Ghetto Address Labels" section.
 
 * Options -h or --help, -v or --version
 	The -h or --help option will print a brief usage summary, including 
@@ -147,10 +158,6 @@ encoded instruction. This technically means that some instructions can never be
 displayed in the disassembly because another instruction may precede it in
 priority.
 
-vPICdisasm does not display the original opcode of the disassembled instruction.
-The original opcode can be convenient for some disassembled instructions that
-were actually meant to be data words (data directive).
-
 These features do not affect the accuracy of the disassembler's output, and 
 may be supported in future versions of vPICdisasm.
 
@@ -158,11 +165,13 @@ may be supported in future versions of vPICdisasm.
 ================================================================================
 vPICdisasm's source code is heavily commented, because this disassembler was
 also a personal learning project of the author.
+
 Operand prefixes (such as "0x" for address operand) can be customized in the 
 format.h header file. 
+
 Field width spacing of the addresses printed alongside disassembly can be 
 customized in the ui.c source file.
-The output file (default is stdout) can be changed in ui.c source file.
+
 vPICdisasm uses libGIS, a free Atmel Generic, Intel HEX8, and Motorola S-Record 
 Parser Library to parse formatted files containing PIC program binaries. libGIS
 is available for free under both MIT and a Public Domain licenses at:
