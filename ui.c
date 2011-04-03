@@ -91,7 +91,7 @@ static void printVersion(FILE *stream) {
 	fprintf(stream, "Written by Vanya Sergeev - <vsergeev@gmail.com>\n");
 }
 	
-int main (int argc, const char *argv[]) {
+int main(int argc, const char *argv[]) {
 	int optc;
 	FILE *fileIn, *fileOut;
 	char arch[9], fileType[8];
