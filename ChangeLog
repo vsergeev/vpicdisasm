@@ -1,7 +1,7 @@
 Release 1.3 - 04/03/2011
  - CRITICAL FIX: Fixed S-Record reading bug that was ignoring valid data
    records.
- - Added output file support by -o/--out-file option.
+ - Added output file support by -o/--out-file <output file> option.
  - Added standard input support with "-" file argument, meaning the
    disassembler now supports piped input.
  - Improved Intel HEX8 / Motorola S-Record auto-detection by first character

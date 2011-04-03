@@ -22,7 +22,7 @@ can read Intel HEX8 and Motorola S-Record formatted files containing valid PIC
 program binaries.
 
 vPICdisasm fully supports all 35 Mid-Range PIC instructions (as well as the two
-deprecated ones ("option" and "tris")), the additional 21 Mid-Range Enhanced 
+deprecated ones: "option" and "tris"), the additional 21 Mid-Range Enhanced 
 PIC instructions, and the 33 Baseline PIC instructions.
 
 vPICdisasm features a handful of formatting options, including:
@@ -87,9 +87,8 @@ vPICdisasm should have no problem being compiled with "gmake".
 	Intel HEX8 or Motorola S-Record formatted files, respectively.
 
 * Option -o or --out-file <output file>
-	This option can be used to specify an output file for writing instead
-	of the standard output. The output file - is also synonymous for
-	standard output.
+	Specify an output file for writing instead of the standard output. The
+	output file - is also synonymous for standard output.
 
 * Option -a or --architecture
 	vPICdisasm supports the Baseline, Mid-Range, and Mid-Range Enhanced
@@ -101,14 +100,8 @@ vPICdisasm should have no problem being compiled with "gmake".
 
 * Option --original
 	Print the original opcode data to the left of the disassembly.
-	Note: does nothing if address labels are enabled (to ensure
+	Note: this option is ignored if address labels are enabled (to ensure
 	assemble-able code).
-
-* Options --no-addresses, --no-destination-comments
-	By default, vPICdisasm will print the instruction addresses alongside 
-	disassembly and destination comments for relative branch, jump, and call
-	instructions. These formatting options can be disabled with the 
-	--no-addresses and --no-destination-comments options, respectively.
 
 * Options --literal-hex, --literal-bin, --literal-dec
 	vPICdisasm can represent literal operands in either hexadecimal, 
@@ -117,6 +110,12 @@ vPICdisasm should have no problem being compiled with "gmake".
 
 * Options --literal-ascii
 	Display the ASCII value of a literal operand in an assembly comment.
+
+* Options --no-addresses, --no-destination-comments
+	By default, vPICdisasm will print the instruction addresses alongside 
+	disassembly and destination comments for relative branch, jump, and call
+	instructions. These formatting options can be disabled with the 
+	--no-addresses and --no-destination-comments options, respectively.
 
 * Options -l or --address-label	
 	See the "Ghetto Address Labels" section.
@@ -127,7 +126,7 @@ vPICdisasm should have no problem being compiled with "gmake".
 	The -v or --version option will print the program's version number.
 
 If you encounter any program bugs or problems, please notify the program
-author by email: Vanya A. Sergeev - <vsergeev@gmail.com>.
+author by email: Vanya A. Sergeev - vsergeev at gmail dot com.
 
 5. Ghetto Address Labels
 ================================================================================
@@ -146,13 +145,15 @@ code without having to manually format the disassembly or adjust the relative
 branch, jump, or call distances with every modification to the disassembly.
 
 The -l or --address-label option overrides the default printing of the
-addresses alongside disassembly. Destination comments can still be used.
+addresses alongside disassembly. Destination comments can still be printed.
 
 Example:
 $ ./vpicdisasm -l "A_" sampleprogram.hex
 vPICdisasm's disassembly will include address labels that will look like this:
-A_0000. For sample disassembly outputs by vPICdisasm, see the
-"Sample Disassembly Outputs" section.
+A_0000.
+
+For sample disassembly outputs by vPICdisasm, see the "Sample Disassembly
+Outputs" section.
 
 6. Shortcomings
 ================================================================================
@@ -194,6 +195,13 @@ $ ./vpicdisasm sampleprogram.hex
    2:   movlw 0xFF
    3:   movwf 0x06
    4:   goto 0x004
+
+$ ./vpicdisasm --original sampleprogram.hex
+   0:	30 00		movlw 0x0
+   1:	00 66		tris 0x06
+   2:	30 FF		movlw 0xFF
+   3:	00 86		movwf 0x06
+   4:	28 04		goto 0x004
 
 $ ./vpicdisasm --no-addresses sampleprogram.hex
 movlw 0x0
