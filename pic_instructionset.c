@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * pic_instructionset.c - PIC instruction set data structure stored in an
  *  array of instruction info structures, as defined in pic_disasm.h.
@@ -27,7 +27,7 @@
 /* I decided to have the operand masks and types here in the
  * main instruction set data structure of the disassembler for clean
  * opcode recognition and operand extraction. It's much more straight
- * forward to work with numbers then manipulating ugly operand 
+ * forward to work with numbers then manipulating ugly operand
  * strings such as "000011rdddddrrrr" for the add instruction. */
 /* This was my first disassembler, and my program ended evolving with this
  * data structure. Turns out it makes code pretty clear, and it generalizes the
@@ -35,9 +35,9 @@
  * instead of hard coding the disassembly for different types of operands. */
 /* But this disassembler model can be applied to virtually any 16-bit
  * or less opcode architecture, making it very flexible in nature--I don't
- * have to rewrite all of the operand disassembly code for interpreting 
- * different r, d, K, k, s, etc. characters in the opcode, which all stand 
- * for a different operand type, because they are written out 
+ * have to rewrite all of the operand disassembly code for interpreting
+ * different r, d, K, k, s, etc. characters in the opcode, which all stand
+ * for a different operand type, because they are written out
  * in the instruction set data structure.
  */
 instructionInfo instructionSet_Baseline[PIC_TOTAL_BASELINE_INSTRUCTIONS] = {

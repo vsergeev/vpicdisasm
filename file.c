@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * file.c - Routines to take care of Intel HEX, and Motorola S-Record file
  *  disassembly. Interface to pic_disasm.c to and format.c to disassemble
@@ -71,7 +71,7 @@ int disassembleIHexFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptions,
 			continue;
 
 		aInstruction.address = irec.address/2;
-		for (i = 0; i < irec.dataLen; i += 2) { 
+		for (i = 0; i < irec.dataLen; i += 2) {
 			/* Make sure there is a data byte after this,
 			 * (we need both because each opcode is 16-bits) */
 			if (i+1 >= irec.dataLen) {
@@ -88,7 +88,7 @@ int disassembleIHexFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptions,
 					continue;
 				}
 			}
-			
+
 			if (dataFromPreviousOddRecordAvailable != 1) {
 				/* Assembled PIC program is stored in little-endian. */
 				aInstruction.opcode = ((uint16_t)irec.data[i+1] << 8);
@@ -105,7 +105,7 @@ int disassembleIHexFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptions,
 				 * counter each iteration) */
 				i--;
 			}
-	
+
 			retVal = disassembleAndPrint(fileOut, &aInstruction, fOptions, archSelect);
 			if (retVal < 0)
 				return retVal;
@@ -116,8 +116,8 @@ int disassembleIHexFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptions,
 	}
 
 	finishDisassembly(fileOut, fOptions);
-	
-	return 0;		
+
+	return 0;
 }
 
 /* Reads a record from an Motorola S-Record formatted file, formats the assembled
@@ -159,7 +159,7 @@ int disassembleSRecordFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptio
 			continue;
 
 		aInstruction.address = srec.address/2;
-		for (i = 0; i < srec.dataLen; i += 2) { 
+		for (i = 0; i < srec.dataLen; i += 2) {
 			/* Make sure there is a data byte after this,
 			 * (we need both because each opcode is 16-bits) */
 			if (i+1 >= srec.dataLen) {
@@ -174,8 +174,8 @@ int disassembleSRecordFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptio
 					continue;
 				}
 			}
-		
-			if (dataFromPreviousOddRecordAvailable != 1) {	
+
+			if (dataFromPreviousOddRecordAvailable != 1) {
 				/* Assembled PIC program is stored in little-endian. */
 				aInstruction.opcode = ((uint16_t)srec.data[i+1] << 8);
 				aInstruction.opcode += ((uint16_t)srec.data[i]);
@@ -185,13 +185,13 @@ int disassembleSRecordFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptio
 				aInstruction.opcode = ((uint16_t)srec.data[i] << 8);
 				aInstruction.opcode += dataFromPreviousOddRecord;
 				dataFromPreviousOddRecordAvailable = 0;
-				
+
 				/* Decrement the counter by one so the outside
 				 * for loop counts correclty (it adds 2 to the
 				 * counter each iteration). */
 				i--;
 			}
-	
+
 			retVal = disassembleAndPrint(fileOut, &aInstruction, fOptions, archSelect);
 			if (retVal < 0)
 				return retVal;
@@ -202,7 +202,7 @@ int disassembleSRecordFile(FILE *fileOut, FILE *fileIn, formattingOptions fOptio
 	}
 
 	finishDisassembly(fileOut, fOptions);
-	
+
 	return 0;
 }
 
@@ -237,7 +237,7 @@ int disassembleAndPrint(FILE *fileOut, const assembledInstruction *aInstruction,
 			fprintf(stderr, "Encountered an irrecoverable error during disassembly!\n");
 			return ERROR_IRRECOVERABLE;
 	}
-			
+
 	/* Next print the disassembled instruction, check for errors. */
 	retVal = printDisassembledInstruction(fileOut, aInstruction, &dInstruction, fOptions);
 	switch (retVal) {
@@ -253,8 +253,8 @@ int disassembleAndPrint(FILE *fileOut, const assembledInstruction *aInstruction,
 			fprintf(stderr, "Encountered an irrecoverable error during disassembly!\n");
 			return ERROR_IRRECOVERABLE;
 	}
-	
-	return 0;		
+
+	return 0;
 }
 
 /* Finish off the disassemby - print "end" if we have address labels enabled */

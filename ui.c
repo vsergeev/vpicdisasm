@@ -15,10 +15,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * ui.c - Main user interface to PIC disassembler. Takes care of program arguments
- *  setting disassembly formatting options, and program file type recognition. 
+ *  setting disassembly formatting options, and program file type recognition.
  *
  */
 
@@ -62,7 +62,7 @@ static void printUsage(FILE *stream, const char *programName) {
   -a, --arch <architecture>	Specify the 8-bit PIC architecture to use\n\
 				during disassembly.\n\
   -t, --file-type <type>	Specify the file type of the object file.\n\
-  -l, --address-label <prefix> 	Create ghetto address labels with \n\
+  -l, --address-label <prefix> 	Create ghetto address labels with\n\
 				the specified label prefix.\n\
   --original                    Print original opcode data alongside\n\
 				disassembly.\n\
@@ -90,7 +90,7 @@ static void printVersion(FILE *stream) {
 	fprintf(stream, "vPICdisasm version 1.3 - 04/03/2011.\n");
 	fprintf(stream, "Written by Vanya Sergeev - <vsergeev@gmail.com>\n");
 }
-	
+
 int main(int argc, const char *argv[]) {
 	int optc;
 	FILE *fileIn, *fileOut;
@@ -107,7 +107,7 @@ int main(int argc, const char *argv[]) {
 	fileOut = stdout;
 
 	arch[0] = '\0';
-	fileType[0] = '\0';	
+	fileType[0] = '\0';
 	while (1) {
 		optc = getopt_long(argc, (char * const *)argv, "o:a:t:l:hv", long_options, NULL);
 		if (optc == -1)
@@ -132,7 +132,7 @@ int main(int argc, const char *argv[]) {
 				break;
 			case 'h':
 				printUsage(stderr, argv[0]);
-				exit(EXIT_SUCCESS);	
+				exit(EXIT_SUCCESS);
 			case 'v':
 				printVersion(stderr);
 				exit(EXIT_SUCCESS);
@@ -145,7 +145,7 @@ int main(int argc, const char *argv[]) {
 	if (!no_addresses)
 		fOptions.options |= FORMAT_OPTION_ADDRESS;
 	if (!no_destination_comments)
-		fOptions.options |= FORMAT_OPTION_DESTINATION_ADDRESS_COMMENT;	
+		fOptions.options |= FORMAT_OPTION_DESTINATION_ADDRESS_COMMENT;
 
 	if (literal_base == FORMAT_OPTION_LITERAL_DEC)
 		fOptions.options |= FORMAT_OPTION_LITERAL_DEC;
@@ -159,7 +159,7 @@ int main(int argc, const char *argv[]) {
 
 	if (original_opcode)
 		fOptions.options |= FORMAT_OPTION_ORIGINAL_OPCODE;
-	
+
 	if (fileOut == NULL) {
 		perror("Error: Cannot open output file for writing");
 		exit(EXIT_FAILURE);
@@ -229,7 +229,7 @@ int main(int argc, const char *argv[]) {
 			exit(EXIT_FAILURE);
 		}
 	}
-	
+
 	if (strcasecmp(fileType, "ihex") == 0)
 		disassembleFile = disassembleIHexFile;
 	else if (strcasecmp(fileType, "srecord") == 0)
@@ -249,7 +249,7 @@ int main(int argc, const char *argv[]) {
 
 	disassembleFile(fileOut, fileIn, fOptions, archSelect);
 
-	if (fileOut != stdout)	
+	if (fileOut != stdout)
 		fclose(fileOut);
 	if (fileOut != stdin)
 		fclose(fileIn);

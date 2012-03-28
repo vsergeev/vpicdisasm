@@ -15,9 +15,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * pic_disasm.h - Header file for PIC instruction disassembly into 
+ * pic_disasm.h - Header file for PIC instruction disassembly into
  *  disassembledInstruction structure.
  *
  */
@@ -46,7 +46,7 @@ enum PIC_Instruction_Set_Index {
 
 /* Enumeration for all types of PIC Operands */
 enum PIC_Operand_Types {
-	OPERAND_NONE, 
+	OPERAND_NONE,
 	OPERAND_REGISTER,
 	OPERAND_REGISTER_DEST,
 	OPERAND_BIT,
@@ -89,7 +89,7 @@ typedef struct _assembledInstruction assembledInstruction;
 /* The disassembled/decoded instruction. */
 struct _disassembledInstruction {
 	uint32_t address;
-	/* A convenient pointer to the instructionSet, so we can refer 
+	/* A convenient pointer to the instructionSet, so we can refer
 	 * the general details of the instruction stored in there. */
 	instructionInfo *instruction;
 	/* Notice that operands can be signed!

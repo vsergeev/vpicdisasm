@@ -15,14 +15,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * file.h - Header file to Routines to take care of Intel HEX, and Motorola S-Record 
+ * file.h - Header file to Routines to take care of Intel HEX, and Motorola S-Record
  *  file disassembly. Interface to pic_disasm.c to and format.c to disassemble
  *  and print a disassembled instruction.
  *
  */
- 
+
 #ifndef FILE_DISASM_H
 #define FILE_DISASM_H
 

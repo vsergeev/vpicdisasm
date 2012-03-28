@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * pic_disasm.c - PIC instruction disassembly into disassembledInstruction structure.
  *
@@ -44,7 +44,7 @@ static int lookupInstruction(uint16_t opcode, int offset, int instructionSetInde
 /* Disassembles an assembled instruction, including its operands. */
 int disassembleInstruction(disassembledInstruction *dInstruction, const assembledInstruction *aInstruction, int instructionSetIndex) {
 	int instructionIndex, i;
-	
+
 	if (dInstruction == NULL)
 		return ERROR_INVALID_ARGUMENTS;
 
@@ -52,7 +52,7 @@ int disassembleInstruction(disassembledInstruction *dInstruction, const assemble
 	    instructionSetIndex != PIC_MIDRANGE &&
 	    instructionSetIndex != PIC_MIDRANGE_ENHANCED)
 		return ERROR_INVALID_ARGUMENTS;
-	
+
 	/* Look up the instruction */
 	instructionIndex = lookupInstruction(aInstruction->opcode, 0, instructionSetIndex);
 
@@ -61,12 +61,12 @@ int disassembleInstruction(disassembledInstruction *dInstruction, const assemble
 	dInstruction->address = aInstruction->address;
 	dInstruction->instruction = &(allInstructionSets[instructionSetIndex].instructionSet[instructionIndex]);
 	dInstruction->alternateInstruction = NULL;
-	
+
 	/* Copy out each operand, extracting the operand data from the original
 	 * opcode using the operand mask. */
-	for (i = 0; i < allInstructionSets[instructionSetIndex].instructionSet[instructionIndex].numOperands; i++) 
+	for (i = 0; i < allInstructionSets[instructionSetIndex].instructionSet[instructionIndex].numOperands; i++)
 		dInstruction->operands[i] = extractDataFromMask(aInstruction->opcode, dInstruction->instruction->operandMasks[i]);
-	
+
 	/* Disassemble operands */
 	if (disassembleOperands(dInstruction) < 0)
 		return ERROR_INVALID_ARGUMENTS; /* Only possible error for disassembleOperands() */
@@ -78,7 +78,7 @@ int disassembleInstruction(disassembledInstruction *dInstruction, const assemble
 static uint16_t extractDataFromMask(uint16_t data, uint16_t mask) {
 	int i, j;
 	uint16_t result = 0;
-	
+
 	/* i counts through every bit of the data,
 	 * j counts through every bit of the data we're copying out. */
 	for (i = 0, j = 0; i < 16; i++) {
@@ -93,7 +93,7 @@ static uint16_t extractDataFromMask(uint16_t data, uint16_t mask) {
 			j++;
 		}
 	}
-	
+
 	return result;
 }
 
@@ -104,20 +104,20 @@ static uint16_t extractDataFromMask(uint16_t data, uint16_t mask) {
 static int lookupInstruction(uint16_t opcode, int offset, int instructionSetIndex) {
 	uint16_t opcodeSearch;
 	int instructionIndex, i;
-	
+
 	for (instructionIndex = offset; instructionIndex < allInstructionSets[instructionSetIndex].numInstructions; instructionIndex++) {
 		opcodeSearch = opcode;
 		/* We want to mask out all of the operands. We don't count up to
 		 * instructionSet[instructionIndex].numOperands because in some instructions
 		 * we have the "x" don't-care bits that we want to mask out. */
-		for (i = 0; i < PIC_MAX_NUM_OPERANDS; i++) 
+		for (i = 0; i < PIC_MAX_NUM_OPERANDS; i++)
 			opcodeSearch &= ~(allInstructionSets[instructionSetIndex].instructionSet[instructionIndex].operandMasks[i]);
 
-		if (opcodeSearch == allInstructionSets[instructionSetIndex].instructionSet[instructionIndex].opcodeMask) 
+		if (opcodeSearch == allInstructionSets[instructionSetIndex].instructionSet[instructionIndex].opcodeMask)
 			break;
 	}
 	/* It's impossible not to find an instruction, because the last instruction "data",
-	 * specifies a word of data at the addresses, instead of an instruction. 
+	 * specifies a word of data at the addresses, instead of an instruction.
 	 * Its operand 2 mask, 0x0000, will set opcode search to 0x0000, and this will always
 	 * match with the opcodeMask of 0x0000. */
 	return instructionIndex;
@@ -133,7 +133,7 @@ static int disassembleOperands(disassembledInstruction *dInstruction) {
 		return ERROR_INVALID_ARGUMENTS;
 	if (dInstruction->instruction == NULL)
 		return ERROR_INVALID_ARGUMENTS;
-	
+
 	/* For each operand, decode its original value. */
 	for (i = 0; i < dInstruction->instruction->numOperands; i++) {
 		switch (dInstruction->instruction->operandTypes[i]) {

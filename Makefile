@@ -12,7 +12,7 @@ install: $(PROGNAME)
 	install -D -s -m 0755 $(PROGNAME) $(DESTDIR)$(BINDIR)/$(PROGNAME)
 
 $(PROGNAME): $(OBJECTS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) 
+	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
 
 clean:
 	rm -rf $(PROGNAME) $(OBJECTS)
