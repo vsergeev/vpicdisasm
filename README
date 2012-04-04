@@ -64,41 +64,7 @@ vPICdisasm should have no problem being compiled with "gmake".
 4. USAGE
 ================================================================================
 
-Usage: ./vpicdisasm <option(s)> <file>
- Disassembles PIC program file <file>. Use - for standard input.
- Written by Vanya A. Sergeev - <vsergeev@gmail.com>.
-
- Additional Options:
-  -o, --out-file <output file>	Write to output file instead of standard output.
-  -a, --arch <architecture>	Specify the 8-bit PIC architecture to use
-				during disassembly.
-  -t, --file-type <type>	Specify the file type of the object file.
-  -l, --address-label <prefix> 	Create ghetto address labels with
-				the specified label prefix.
-  --original                    Print original opcode data alongside
-				disassembly.
-  --no-addresses		Do not display the address alongside
-				disassembly.
-  --no-destination-comments	Do not display the destination address
-				comments of relative branch instructions.
-  --literal-hex			Represent literals in hexadecimal (default)
-  --literal-bin			Represent literals in binary
-  --literal-dec			Represent literals in decimal
-  --literal-ascii		Show ASCII value of literal operands in a
-				comment
-  -h, --help			Display this usage/help.
-  -v, --version			Display the program's version.
-
-Supported 8-bit PIC Architectures:
-  Baseline 			baseline
-  Mid-Range			midrange (default)
-  Enhanced Mid-Range		enhanced
-
-Supported file types:
-  Intel HEX8 			ihex
-  Motorola S-Record 		srecord
-
-Usage: ./vpicdisasm <option(s)> <file>
+Usage: vpicdisasm <option(s)> <file>
  Disassembles PIC program file <file>. Use - for standard input.
  Written by Vanya A. Sergeev - <vsergeev@gmail.com>.
 
@@ -138,23 +104,23 @@ Supported file types:
 
 * File Input:
 	For most purposes:
-	 $ ./vpicdisasm <PIC program file>
+	 $ vpicdisasm <PIC program file>
 	Example:
-	 $ ./vpicdisasm sampleprogram.hex
+	 $ vpicdisasm sampleprogram.hex
 
 	Use - for standard input.
 
 	vPICdisasm will assume the Mid-Range PIC architecture by default. You can
 	specifiy an alternate architecture with the -a or --architecture option.
 	Example:
-	$ ./vpicdisasm -a enhanced sampleprogram.hex
+	$ vpicdisasm -a enhanced sampleprogram.hex
 
 * Option -t or --file-type
 	vPICdisasm will auto-recognize Intel HEX8, and Motorola S-Record files
 	by their first character. However, the -t or --file-type option can be
 	used to explicitly select the file format.
 	Example:
-	 $ ./vpicdisasm -t ihex sampleprogram
+	 $ vpicdisasm -t ihex sampleprogram
 
 	The file type argument for this option can be "ihex", or "srecord" for
 	Intel HEX8 or Motorola S-Record formatted files, respectively.
@@ -221,7 +187,7 @@ The -l or --address-label option overrides the default printing of the
 addresses alongside disassembly. Destination comments can still be printed.
 
 Example:
-$ ./vpicdisasm -l "A_" sampleprogram.hex
+$ vpicdisasm -l "A_" sampleprogram.hex
 vPICdisasm's disassembly will include address labels that will look like this:
 A_0000.
 
@@ -262,35 +228,35 @@ libGIS is compiled into vPICdisasm--it does not need to be obtained separately.
 Here are a few sample disassembly outputs illustrating the various formatting
 options and disassembly settings vPICdisasm supports:
 
-$ ./vpicdisasm sampleprogram.hex
+$ vpicdisasm sampleprogram.hex
    0:   movlw 0x0
    1:   tris 0x06
    2:   movlw 0xFF
    3:   movwf 0x06
    4:   goto 0x004
 
-$ ./vpicdisasm --original sampleprogram.hex
+$ vpicdisasm --original sampleprogram.hex
    0:	30 00		movlw 0x0
    1:	00 66		tris 0x06
    2:	30 FF		movlw 0xFF
    3:	00 86		movwf 0x06
    4:	28 04		goto 0x004
 
-$ ./vpicdisasm --no-addresses sampleprogram.hex
+$ vpicdisasm --no-addresses sampleprogram.hex
 movlw 0x0
 tris 0x06
 movlw 0xFF
 movwf 0x06
 goto 0x004
 
-$ ./vpicdisasm --literal-bin sampleprogram.hex
+$ vpicdisasm --literal-bin sampleprogram.hex
    0:   movlw b'00000000'
    1:   tris 0x06
    2:   movlw b'11111111'
    3:   movwf 0x06
    4:   goto 0x004
 
-$ ./vpicdisasm -l "A_" sampleprogram.hex
+$ vpicdisasm -l "A_" sampleprogram.hex
 
 org 0x000
 A_000 movlw 0x0
@@ -300,7 +266,7 @@ A_003 movwf 0x06
 A_004 goto A_004
 end
 
-$ ./vpicdisasm --literal-ascii sampleprogram2.hex
+$ vpicdisasm --literal-ascii sampleprogram2.hex
    0:   retlw 0x48      ; 'H'
    1:   retlw 0x45      ; 'E'
    2:   retlw 0x4C      ; 'L'
