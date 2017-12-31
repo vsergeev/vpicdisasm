@@ -128,7 +128,10 @@ static int asprintf_portable(char **str, const char *fmt, ...) {
 	va_list ap;
 
 	va_start(ap, fmt);
-	len = vsnprintf(*str, 0, fmt, ap);
+	len = vsnprintf(NULL, 0, fmt, ap);
+	va_end(ap);
+
+	va_start(ap, fmt);
 	*str = malloc(len+1);
 	len = (*str == NULL) ? -1 : vsnprintf(*str, len+1, fmt, ap);
 	va_end(ap);
